@@ -30,6 +30,15 @@ test('consulta las tres tablas y relaciona correctamente el resumen', async t =>
   assert.equal(summary.datos[0].calculo_correcto, true);
   assert.equal((await fetch(`${root}/api/mps`, { method: 'POST' })).status, 405);
   assert.equal((await fetch(`${root}/inexistente`)).status, 404);
+  const docs = await fetch(`${root}/docs`);
+  assert.equal(docs.status, 200);
+  assert.match(docs.headers.get('content-type'), /text\/html/);
+  assert.match(await docs.text(), /SwaggerUIBundle/);
+  const spec = await (await fetch(`${root}/openapi.json`)).json();
+  assert.equal(spec.openapi, '3.0.3');
+  for (const route of ['/', '/health', '/api/mps', '/api/recetas', '/api/mrp', '/api/resumen']) {
+    assert.ok(spec.paths[route].get.responses['200']);
+  }
 });
 
 test('health detecta un fallo real de base de datos y no revela detalles', async t => {

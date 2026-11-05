@@ -19,6 +19,8 @@ No usar service_role ni secret keys. No guardar claves en GitHub.
 
 ## Rutas GET
 
+- `/docs`: documentacion interactiva Swagger UI
+- `/openapi.json`: especificacion OpenAPI 3.0.3
 - `/`: descripcion y rutas
 - `/health`: comprueba conexion con Supabase
 - `/api/mps`: plan_mps

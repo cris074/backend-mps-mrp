@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import { pathToFileURL } from 'node:url';
+import { openapi, docsHtml } from './docs.js';
 
 const routes = new Map([
   ['/api/mps', 'plan_mps'],
@@ -35,10 +36,15 @@ export function createApp({ supabaseUrl, supabaseKey, fetchImpl = fetch }) {
     }
     const path = new URL(request.url, 'http://localhost').pathname;
     try {
+      if (path === '/docs' || path === '/docs/') {
+        response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        return response.end(docsHtml);
+      }
+      if (path === '/openapi.json') return send(200, openapi);
       if (path === '/') return send(200, {
         servicio: 'Backend MPS y MRP',
         descripcion: 'API de lectura del ejemplo academico en Supabase',
-        rutas: ['/health', ...routes.keys(), '/api/resumen']
+        rutas: ['/docs', '/openapi.json', '/health', ...routes.keys(), '/api/resumen']
       });
       if (path === '/health') {
         await readTable('plan_mps');
