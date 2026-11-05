@@ -1,0 +1,9 @@
+{
+  "name": "backend-mps-mrp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend de lectura para la actividad MPS y MRP con Supabase",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": { "start": "node server.js", "test": "node --test" }
+}
